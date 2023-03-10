@@ -27,7 +27,7 @@ main_bp = Blueprint(
 def dashboard():
     """Logged-in User Dashboard."""
     return render_template(
-        "dashboard.jinja2",
+        "dashboard.html",
         title="Flask-Login Tutorial",
         template="dashboard-template",
         current_user=current_user,

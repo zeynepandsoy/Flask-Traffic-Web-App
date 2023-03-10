@@ -3,22 +3,41 @@
 from pathlib import Path
 
 # Sets the project root folder
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')
 
 class Config:
-    """Set Flask configuration from environment variables."""
+    """Base config."""
 
-    #FLASK_APP=wsgi.py
-    FLASK_ENV = "production"
     SECRET_KEY = "cQw2uTRiHEXGWVAepfDAqg"
     #SQLALCHEMY_DATABASE_URI=mysql+pymysql://myuser:mypassword@host.example.com:1234/mydatabase
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + str(PROJECT_ROOT.joinpath("data", "traffic.db"))
-    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + str(
+        PROJECT_ROOT.joinpath("data", "traffic.db")
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    STATIC_FOLDER = "static"
-    TEMPLATES_FOLDER = "templates"
+    SQLALCHEMY_ECHO = False
 
 
+class ProdConfig(Config):
+    """Production config.
+    Not currently implemented.
+    """
 
+    pass
+
+
+class DevConfig(Config):
+    """Development config"""
+
+    FLASK_ENV = "development"
+    DEBUG = True
+    TESTING = True
+
+
+class TestConfig(Config):
+    """Testing config"""
+
+    TESTING = True
+    SQLALCHEMY_ECHO = True
+    WTF_CSRF_ENABLED = False
+    SERVER_NAME = "127.0.0.1:5000"
 

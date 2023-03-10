@@ -39,3 +39,16 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+    
+# INCLUDE MODELS FOR TRAFFIC APP, make 1st page like paralympics event page, link to dashboard.html
+#i.e.:
+"""
+class Observations(db.Model):
+    Traffic observations
+
+    __tablename__ = "observations"
+    observation_id = db.Column(db.Integer, primary_key=True)
+    weather = db.Column(db.Text, nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    ...
+"""

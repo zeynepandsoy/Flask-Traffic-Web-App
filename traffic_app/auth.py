@@ -2,9 +2,9 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user
 
-from . import login_manager
-from .forms import LoginForm, SignupForm
-from .models import User, db
+from traffic_app import login_manager
+from traffic_app.forms import LoginForm, SignupForm
+from traffic_app.models import User, db
 
 # Blueprint Configuration
 auth_bp = Blueprint(
@@ -26,7 +26,7 @@ def signup():
         if existing_user is None:
             #Create a user via our model
             user = User(
-                name=form.name.data, email=form.email.data, website=form.website.data
+                name=form.name.data, email=form.email.data 
             )
             user.set_password(form.password.data)
             #Commit our new user record and log the user in
@@ -36,7 +36,7 @@ def signup():
             return redirect(url_for("main_bp.dashboard"))
         flash("A user already exists with that email address.")
     return render_template(
-        "signup.jinja2",
+        "signup.html",
         title="Create an Account.",
         form=form,
         template="signup-page",
@@ -66,7 +66,7 @@ def login():
         flash("Invalid username/password combination")
         return redirect(url_for("auth_bp.login"))
     return render_template(
-        "login.jinja2",
+        "login.html",
         form=form,
         title="Log in.",
         template="login-page",
