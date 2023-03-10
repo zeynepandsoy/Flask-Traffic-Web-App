@@ -11,3 +11,24 @@ To set up your project:
    or [the pip documentation](https://pip.pypa.io/en/latest/user_guide/#requirements-files).
 4. Edit .gitignore to add any config files and folders for your IDE. 
 
+
+
+
+
+# Set-up Instructions to run the app 
+
+## Set-up
+
+You will need to a Python environment e.g create and activate a venv.
+
+Install the packages from requirements.txt.
+
+*To run the app enter below command in terminal:
+
+python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run
+
+
+
+## Repository link
+
+GitHub Repository Link: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy.git

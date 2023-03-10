@@ -41,6 +41,7 @@ class User(UserMixin, db.Model):
         return '<User {}>'.format(self.username)
     
 # INCLUDE MODELS FOR TRAFFIC APP, make 1st page like paralympics event page, link to dashboard.html
+#also serialize the data 
 #i.e.:
 """
 class Observations(db.Model):
