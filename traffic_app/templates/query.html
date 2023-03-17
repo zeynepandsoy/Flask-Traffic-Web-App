@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% set title = 'Query' %}
+
+{% block content %}
+   <body>
+       <h1>Query: {{ header }}</h1>
+       <p>Select a value:</p>
+       <form action="/result/{{ header }}/{{ option }}" method="get">
+           <select name="option">
+               {% for option in options %}
+                   <option value="{{ option }}">{{ option }}</option>                 
+               {% endfor %}
+           </select>
+           <input type="submit" value="Submit">
+       </form>
+   </body>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

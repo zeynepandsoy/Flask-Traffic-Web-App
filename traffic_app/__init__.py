@@ -23,6 +23,7 @@ from pathlib import Path
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_marshmallow import Marshmallow
 
 # Sets the project root folder
 PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')
@@ -30,7 +31,8 @@ PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')
 # Create a global SQLAlchemy object
 db = SQLAlchemy()
 login_manager = LoginManager()
-
+# Create a global Flask-Marshmallow object
+ma = Marshmallow()
 
 def create_app(config_object): #config_class
     """Create and configure the Flask app"""
@@ -49,6 +51,7 @@ def create_app(config_object): #config_class
 
     with app.app_context():
         from traffic_app import routes, auth
+        from traffic_app.models import User, Query
         #from traffic_app.models import User
         #from .assets import compile_assets
 
@@ -71,3 +74,5 @@ def initialize_extensions(app):
     db.init_app(app)
     # login manager
     login_manager.init_app(app)
+    # Flask-Marshmallow
+    ma.init_app(app)

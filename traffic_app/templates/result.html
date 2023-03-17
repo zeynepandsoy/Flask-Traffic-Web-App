@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% set title = 'Query Results' %}
+{% block content %}
+
+<head>
+    <meta charset="utf-8">
+    <title> Query Results</title>
+</head>
+<body>
+    <h1>Query Results</h1>
+    <p><strong>Chosen Option:</strong> {{ option }}</p>
+    <p><strong>Average Traffic Volume:</strong> {{ average }}</p>
+    <p><strong>Minimum Traffic Volume:</strong> {{ minimum }}</p>
+    <p><strong>Maximum Traffic Volume:</strong> {{ maximum }}</p>
+</body>
+
+{% endblock %}

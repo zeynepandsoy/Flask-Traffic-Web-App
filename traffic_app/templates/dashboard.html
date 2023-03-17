@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
-{% set title = 'Paralympics Home' %}
+{% set title = 'Traffic Home' %}
 {% block content %}
 
-  <h1>{{ body }}</h1>
+  <h1>{{ title }}</h1>
 
   {% if current_user.is_authenticated %}
     <p>Hi {{ current_user.name }}!</p>
+    <p>We have data for the following events</p>
+    <ul>
+      {% for header in headers %}
+        <li><a href="/query/{{ header }}">{{ header }}</a></li>
+      {% endfor %}
+    </ul>
+
+
     <a href="{{ url_for('main_bp.logout') }}">Log out</a>
   {% endif %}
 
