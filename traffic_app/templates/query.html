@@ -3,19 +3,27 @@
 {% set title = 'Query' %}
 
 {% block content %}
-   <body>
-       <h1>Query: {{ header }}</h1>
-       <p>Select a value:</p>
-       <form action="/result/{{ header }}/{{ option }}" method="get">
-           <select name="option">
-               {% for option in options %}
-                   <option value="{{ option }}">{{ option }}</option>                 
-               {% endfor %}
-           </select>
-           <input type="submit" value="Submit">
-       </form>
-   </body>
+  <div class="jumbotron text-center">
+    <h1 class="display-4">Query Options for {{ header }}</h1>
+  </div>
+  <!-- Dropdown menu -->
+  <form class="form-inline mb-4" method="get">
+    <div class="form-group">
+      <label for="options" class="mr-2">Select an option:</label>
+      <!-- Note: As below codeline includes JavaScript, it may be underlined -->
+      <select class="form-control form-control-sm" name="option" id="options" onchange="window.location.href = '{{ url_for('main_bp.result', header=header, option=option) }}/' + this.value.replace(' ', '_');">
+        {% for option in options %}
+          <option value="{{ option }}">{{ option }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
 {% endblock %}
+
+
+
+
+
 
 
 

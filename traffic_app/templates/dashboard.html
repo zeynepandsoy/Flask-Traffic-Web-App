@@ -1,20 +1,28 @@
 {% extends "layout.html" %}
 {% set title = 'Traffic Home' %}
+
 {% block content %}
-
-  <h1>{{ title }}</h1>
-
-  {% if current_user.is_authenticated %}
-    <p>Hi {{ current_user.name }}!</p>
-    <p>We have data for the following events</p>
-    <ul>
-      {% for header in headers %}
-        <li><a href="/query/{{ header }}">{{ header }}</a></li>
-      {% endfor %}
-    </ul>
-
-
-    <a href="{{ url_for('main_bp.logout') }}">Log out</a>
-  {% endif %}
-
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1 class="display-4">{{ title }}</h1>
+    {% if current_user.is_authenticated %}
+      <p class="lead">Hi {{ current_user.name }}!</p>
+      <hr class="my-4">
+      <p>Please choose a category to query traffic volume on:</p>
+      <div class="row">
+        {% for header in headers %}
+          <div class="col-md-4 mb-3">
+            <!-- Traffic volume categories as cards  -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ header }}</h5>
+                <a href="/query/{{ header }}" class="btn btn-primary">View</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

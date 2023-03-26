@@ -1,8 +1,8 @@
 """Database models."""
+
 from traffic_app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 
 class User(UserMixin, db.Model):
@@ -40,27 +40,14 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password, password)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.name)
     
-# INCLUDE MODELS FOR TRAFFIC APP, make 1st page like paralympics event page, link to dashboard.html
-#also serialize the data 
-#i.e.:
-"""
-class Query(db.Model):
-    'Traffic observation parameters/queries'
-
-    __tablename__ = "query"
-    observation_id = db.Column(db.Integer, primary_key=True)
-    weather = db.Column(db.Text, nullable=False)
-    year = db.Column(db.Integer, nullable=False)
-    ...
-"""
 
 class Query(db.Model):
     """Traffic Query Parameters"""
 
-    __tablename__ = "query"
-    record_id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = "newdatabase"
+    rowid = db.Column(db.Integer, primary_key=True)
     holiday = db.Column(db.Text, nullable=False)
     weather = db.Column(db.Text, nullable=False)
     traffic_volume = db.Column(db.Integer, nullable=False)
@@ -70,6 +57,22 @@ class Query(db.Model):
     hour = db.Column(db.Integer, nullable=False)
     categorized_hour = db.Column(db.Text, nullable=False)
     categorized_weekday = db.Column(db.Text, nullable=False)
+    #date = db.Column(db.Date, nullable=False)
+
+
+    def __init__(self, holiday, weather, traffic_volume, year, month, day, hour, categorized_hour, categorized_weekday):
+        self.holiday = holiday
+        self.weather = weather
+        self.traffic_volume = traffic_volume
+        self.year = year
+        self.month = month
+        self.day = day
+        self.hour = hour
+        self.categorized_hour = categorized_hour
+        self.categorized_weekday = categorized_weekday
+        #self.date = date
+
+
 
     def __repr__(self):
         """
@@ -77,19 +80,7 @@ class Query(db.Model):
         :returns str
         """
         clsname = self.__class__.__name__
-        return f"<{clsname}: {self.holiday},{self.weather}, {self.traffic_volume}, {self.year},{self.month},{self.day}, {self.hour}, {self.categorized_hour},{self.categorized_weekday}>" 
+        return f"<{clsname}: {self.holiday},{self.weather}, {self.traffic_volume}, {self.year},{self.month},{self.day}, {self.hour}, {self.categorized_hour},{self.categorized_weekday}>" #, {self.date}
 
-    
-"""
-define a Class:
-def for column(weather) in Query.columns
-print unique.values(cloud, sunny ...) of chosen column (dropdown)
-    for chosen unique.value() of chosen column
-    return
-    get_max(traffic volume)
-    get_min(traffic volume)
-    get_avg(traffic volume)
-    string representattion:
-    f'string("average traffic volume of {{...}} is {{relatively high/low, quite average}}")
 
-"""
+

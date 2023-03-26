@@ -1,4 +1,3 @@
-
 """Flask configuration."""
 from pathlib import Path
 
@@ -9,7 +8,6 @@ class Config:
     """Base config."""
 
     SECRET_KEY = "cQw2uTRiHEXGWVAepfDAqg"
-    #SQLALCHEMY_DATABASE_URI=mysql+pymysql://myuser:mypassword@host.example.com:1234/mydatabase
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + str(
         PROJECT_ROOT.joinpath("data", "traffic.db")
     )
@@ -39,5 +37,5 @@ class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_ECHO = True
     WTF_CSRF_ENABLED = False
-    SERVER_NAME = "127.0.0.1:5000"
+    #SERVER_NAME = "127.0.0.1:5000"  
 

@@ -1,6 +1,5 @@
-
 """Logged-in page routes."""
-# make responses json 
+
 
 import sys, json
 from flask import Blueprint, redirect, render_template, url_for
@@ -10,20 +9,18 @@ from flask import(
     make_response,
     jsonify,
 )
+from datetime import datetime
+
 from flask_login import current_user, login_required, logout_user
 
 from sqlalchemy import func
-from collections import defaultdict
 
 from traffic_app import db
 from traffic_app.models import Query
 from traffic_app.schemas import QuerySchema
 
+#from statistics import stdev
 
-#from sqlalchemy import create_engine
-
-
-#engine = create_engine('sqlite:///path/to/traffic.db')
 
 # -------
 # Schemas
@@ -47,36 +44,23 @@ main_bp = Blueprint(
 @login_required
 def dashboard():
     """Logged-in User Dashboard."""
-    #response = get_queries()
-    headers = [col.name for col in Query.__table__.columns if col.name not in ['traffic_volume','record_id']]
+    headers = [col.name.replace('_', ' ') for col in Query.__table__.columns if col.name not in ['traffic_volume','rowid']]
     return render_template(
         "dashboard.html",
         current_user=current_user,
-        headers=headers
-        #body="You are now logged in!",
-        #query_list=response
+        headers=headers,
     )
 
-    #with engine.connect() as con:
-        #result = con.execute(f"SELECT DISTINCT {header} FROM Query ORDER BY {header}")
-        #options = [option[0] for option in result.fetchall()]
-
-#options = db.session.query(Query).with_entities(header).distinct().order_by(header).all()
-#options = [option[0] for option in options]
-
-# is clicking on a dropdown option a GET or POST request?
-
-@main_bp.route('/query/<header>', methods=["GET","POST"])
+@main_bp.route('/query/<header>')
 @login_required
 def query(header):
     """Dropdown menu for query options"""
- 
-    options = db.session.query(Query).distinct(header).order_by(header).all()
-    
-    #column_obj = getattr(Query, header)
-    #options = db.session.query(column_obj).distinct().order_by(column_obj).all()
-    #options = [option[0] for option in options]
-    
+    #options variable must contain a list of distinct values of selected header column, sorted in ascending order
+
+    column_obj = getattr(Query, header)
+    options = db.session.query(column_obj).distinct().order_by(column_obj).all()
+    options = [option[0] for option in options]
+    #print(type(options))
     return render_template('query.html', header=header, options=options)
 
 
@@ -85,23 +69,108 @@ def query(header):
 @login_required
 def result(header, option):
     """Summary statistics / results page of selected query (dropdown option))"""
+    # Replace underscores with spaces in option value (check if below code is still necessary)
+    option = option.replace('_', ' ')
     query = db.session.query(Query).filter(getattr(Query, header) == option)
-    average = query.with_entities(func.avg(Query.traffic_volume)).scalar()
+    
+    # Change average traffic from decimal to int
+    average = int(query.with_entities(func.avg(Query.traffic_volume)).scalar())
     minimum = query.with_entities(func.min(Query.traffic_volume)).scalar()
     maximum = query.with_entities(func.max(Query.traffic_volume)).scalar()
-    return render_template('result.html', header=header, option=option, average=average, minimum=minimum, maximum=maximum)
 
+    return render_template('result.html', header=header, option=option, average=average, minimum=minimum, maximum=maximum)
 
 
 @main_bp.route("/logout")
 @login_required
 def logout():
-    """User log-out logic."""
+    """Logs out the user and returns them to the login page"""
     logout_user()
     return redirect(url_for("auth_bp.login"))
 
 
+# ROUTES THAT ALLOW PROGRAMMATIC ACCESS TO DATA (JSON RESPONSES) 
+
+@app.get("/data/")
+@login_required
+def get_all_data():
+    """Returns all data in the database"""
+    # Get all data from the database
+    data = Query.query.all()
+    # Serialize the data for the response
+    data = queries_schema.dump(data)
+    # Return a JSON response
+    return data
 
 
 
+"""
+@app.get("/data/<date>")
+@login_required
+def get_data_by_date(date):
+    #Returns all data in the database for a given date
+    try:
+        date_obj = datetime.strptime(date, '%Y-%m-%d').date()
+        data = Query.query.filter_by(date=date_obj).all()
+        data = queries_schema.dump(data)
+        return data
+    except ValueError:
+        return {"message": f"Invalid date format provided: {date}"}, 400
+
+
+@app.get("/data/<year>/<month>/<day>")
+@login_required
+def get_data_by_date(year, month, day):
+    #Returns all data in the database for a given date
+    try:
+        date_obj = datetime.strptime(f"{year}-{month}-{day}", '%Y-%m-%d').date()
+        print(date_obj)
+        data = Query.query.filter_by(date=date_obj).all()
+        data = queries_schema.dump(data)
+        return data
+    except ValueError:
+        return {"message": f"Invalid date format provided: {year}/{month}/{day}"}, 400
+
+"""
+
+
+
+
+"""
+   # Create a dictionary to hold the response data
+    response = {
+        "header": header,
+        "option": option,
+        "average": average,
+        "minimum": minimum,
+        "maximum": maximum
+    }
+    # Return a JSON response
+    return render_template('query.html', json_data=response)
+    both doesnt work
+    quartiles = query.with_entities(func.percentile_cont(0.25).within_group(Query.traffic_volume).label("q1"),
+                                     func.percentile_cont(0.5).within_group(Query.traffic_volume).label("q2"),
+                                     func.percentile_cont(0.75).within_group(Query.traffic_volume).label("q3")).first()
     
+    if average < quartiles.q1:
+        category = "avg is relatively low"
+    elif average > quartiles.q3:
+        category = "avg is relatively high"
+    else:
+        category = "avg is moderate"
+
+    result_dict = {"average": average,
+                   "minimum": minimum,
+                   "maximum": maximum,
+                   "category": category}
+    
+    return jsonify(result_dict)
+
+"""
+
+
+
+
+
+
+

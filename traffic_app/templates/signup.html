@@ -1,82 +1,79 @@
 {% extends "layout.html" %}
-
+{% set title = 'Signup Page' %}
 
 {% block content %}
-  <div class="form-wrapper">
-    
-    {% for message in get_flashed_messages() %}
-      <div class="alert alert-warning">
-        <button
-          type="button"
-          class="close"
-          data-dismiss="alert">
-          x
-        </button>
-        {{ message }}
-      </div>
-    {% endfor %}
+<!-- code implemented from https://mdbootstrap.com/docs/standard/extended/login/ (variation3)-->
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <form method="POST" action="/signup">
 
-    <h1>Sign Up</h1>
+          {{ form.csrf_token }}
 
-    <form method="POST" action="/signup">
-      {{ form.csrf_token }}
+          <div class="text-center">
+            <h1>{{ title }}</h1>
+          </div>         
 
-      <fieldset class="name">
-        {{ form.name.label }}
-        {{ form.name(placeholder='John Smith') }}
-        {% if form.name.errors %}
-          <ul class="errors">
-            {% for error in form.email.errors %}
-              <li>{{ error }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-      </fieldset>
+          <!-- Name input -->
+          <div class="form-outline mb-4">
+            {{ form.name.label }}
+            {{ form.name(placeholder='John Smith', class="form-control form-control-lg") }}
+            {% if form.name.errors %}
+              <ul class="errors">
+                {% for error in form.name.errors %}
+                  <li>{{ error }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
 
-      <fieldset class="email">
-        {{ form.email.label }}
-        {{ form.email(placeholder='youremail@example.com') }}
-        {% if form.email.errors %}
-          <ul class="errors">
-            {% for error in form.email.errors %}
-              <li>{{ error }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-      </fieldset>
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            {{ form.email.label }}
+            {{ form.email(placeholder='johnsmith@example.com', class="form-control form-control-lg") }}
+            {% if form.email.errors %}
+              <ul class="errors">
+                {% for error in form.email.errors %}
+                  <li>{{ error }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
 
-      <fieldset class="password">
-        {{ form.password.label }}
-        {{ form.password }}
-        {% if form.password.errors %}
-          <ul class="errors">
-            {% for error in form.password.errors %}
-              <li>{{ error }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-      </fieldset>
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            {{ form.password.label }}
+            {{ form.password(class="form-control form-control-lg") }}
+            {% if form.password.errors %}
+              <ul class="errors">
+                {% for error in form.password.errors %}
+                  <li>{{ error }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
 
-      <fieldset class="confirm">
-        {{ form.confirm.label }}
-        {{ form.confirm }}
-        {% if form.confirm.errors %}
-          <ul class="errors">
-            {% for error in form.confirm.errors %}
-              <li>{{ error }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-      </fieldset>
+          <!-- Confirm password input -->
+          <div class="form-outline mb-4">
+            {{ form.confirm.label }}
+            {{ form.confirm(class="form-control form-control-lg") }}
+            {% if form.confirm.errors %}
+              <ul class="errors">
+                {% for error in form.confirm.errors %}
+                  <li>{{ error }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
 
-      <div class="submit-button">
-        {{ form.submit }}
-      </div>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Sign up</button>
 
-    </form>
-
-    <div class="login-signup">
-      <div>
-        <span>Already have an account?</span>
-        <a href="{{ url_for('auth_bp.login') }}">Log in.</a>
+          <div class="login-signup mt-3">
+            <span>Already have an account?</span>
+            <a href="{{ url_for('auth_bp.login') }}">Log in</a>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</section>
 
 {% endblock %}

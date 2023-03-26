@@ -19,13 +19,18 @@ To set up your project:
 
 ## Set-up
 
-You will need to a Python environment e.g create and activate a venv.
+# Please ask Sarah Sanders to mark this coursework herself, i have discussed this with her as there may be misunderstandings about the use of json? duzelt bunu
+
+Python environment is created, please activate a venv.
 
 Install the packages from requirements.txt.
 
-*To run the app enter below command in terminal:
+*To app is ran entering below command in terminal:
 
 python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run
+
+*Tests are run entering below command in terminal:
+python -m pytest -v tests/ -W ignore::DeprecationWarning
 
 
 

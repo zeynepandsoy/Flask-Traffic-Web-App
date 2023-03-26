@@ -1,17 +1,23 @@
 {% extends 'layout.html' %}
+
 {% set title = 'Query Results' %}
+
 {% block content %}
-
-<head>
-    <meta charset="utf-8">
-    <title> Query Results</title>
-</head>
-<body>
-    <h1>Query Results</h1>
-    <p><strong>Chosen Option:</strong> {{ option }}</p>
-    <p><strong>Average Traffic Volume:</strong> {{ average }}</p>
-    <p><strong>Minimum Traffic Volume:</strong> {{ minimum }}</p>
-    <p><strong>Maximum Traffic Volume:</strong> {{ maximum }}</p>
-</body>
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+    <div class="jumbotron">
+        <h1 class="display-4">Query Results </h1>
+    </div>
+      <hr>
+      <p><strong>Chosen Option:</strong> {{ option }}</p>
+      <p><strong>Average Traffic Volume:</strong> {{ average }}</p>
+      <p><strong>Minimum Traffic Volume:</strong> {{ minimum }}</p>
+      <p><strong>Maximum Traffic Volume:</strong> {{ maximum }}</p>
+      <br>
+      <!-- Back button -->
+      <a href="{{ url_for('main_bp.query', header=header, option=option) }}" class="btn btn-primary">Back</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
