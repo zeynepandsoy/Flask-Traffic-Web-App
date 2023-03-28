@@ -153,6 +153,8 @@ def get_all_data():
 
 # include error handling add ways to run in setup.py 
 
+## API ROUTE
+
 # refer to README.md for instructions to query data from the database with different filters or parameters
 @app.get("/data/")
 #@login_required

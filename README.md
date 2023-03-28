@@ -1,5 +1,5 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=10410173&assignment_repo_type=AssignmentRepo)
-# COMP0034 Coursework 2 starter code template
+# COMP0034 Coursework 2 
 
 To set up your project:
 
@@ -12,42 +12,51 @@ To set up your project:
 4. Edit .gitignore to add any config files and folders for your IDE. 
 
 
+## Repository link
 
+GitHub Repository Link: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy.git
 
 
 # Set-up Instructions to run the app 
 
-## Set-up
-
-## Please ask Sarah Sanders to mark this coursework herself, this has been discussed and agreed upon
-
+## Please ask Sarah Sanders to mark this coursework herself, this has been discussed and agreed upon.
 
 Python environment is created, please activate a venv.
 
 Install the packages from requirements.txt.
 
-*To app is ran entering below command in terminal:
+*The app is ran entering below command in terminal:
 
-python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run
+`python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run`
 
-*Tests are run entering below command in terminal:
-python -m pytest -v tests/ -W ignore::DeprecationWarning
+*The tests are ran entering below command in terminal:
 
-to run api links
-no filter:   `/data/`         i.e., 127.0.0.1:5000/data/ 
- without any filter paramaters returns all data in json format
+`python -m pytest -v tests/ -W ignore::DeprecationWarning`
 
-single filter:  `/data/?<header>=<option>`         i.e., 127.0.0.1:5000/data/?day=23
-Adding a single filter can be accomplished with `?<header>=` syntax, given the category and unique value are acceptable inputs from the dataset
-
-several filters: `/data/?<header>=<option>&<another_header>=<another_option>...`  i.e., 127.0.0.1:5000/data/?day=23&month=10&year=2015 would return the traffic details for the specific date 23.10.2015
-With `&` symbol new query parameters can be added to further constraint and personalize the scope of traffic observations
-
-note: query values with two or more words, i.e. colombus day, use `%20` for spaces between words:
-/data/?holiday=Columbus%20Day, or /data/?holiday=New%20Years%20Day
+A single test can be ran with the command: `python -m pytest -v tests//test_filename.py::test_specific__test`
+i.e., python -m pytest -v tests//test_routes.py::test_get_all_data
 
 
+## Instructions to query the API route to get all data using URL endpoints
 
-## Repository link
+**No filter:** `/data/` i.e., 127.0.0.1:5000/data/ 
 
-GitHub Repository Link: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy.git
+Without any filter, the url enpoint `/data/` returns all data in JSON format
+
+**Single filter:** `/data/?<header>=<option>` i.e., 127.0.0.1:5000/data/?day=23
+
+Adding a single filter can be accomplished commanding `?<header>=` , given the category and unique value are acceptable inputs from the dataset. This action return all data of the selected category in JSON format
+
+**Several filters:** `/data/?<header>=<option>&<another_header>=<another_option>...` 
+
+With `&` command new query parameters can be added to further constraint and personalize the scope of traffic observations
+
+i.e., 127.0.0.1:5000/data/?day=23&month=10&year=2015 would return the traffic details for the specific date 23/10/2015
+
+***Remark:*** To query values with two or more words, i.e. Colombus Day, `%20` must be used instead of spaces between the words. i.e. /data/?holiday=Columbus%20Day, or /data/?holiday=New%20Years%20Day
+
+# TESTING
+
+## Results of running tests
+
+<img width="1002" alt="Test Results" src="https://user-images.githubusercontent.com/115081167/228340260-09d32ceb-9955-4601-9d31-a2479d1a50ca.png">
