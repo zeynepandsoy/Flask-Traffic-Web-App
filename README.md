@@ -19,7 +19,8 @@ To set up your project:
 
 ## Set-up
 
-# Please ask Sarah Sanders to mark this coursework herself, i have discussed this with her as there may be misunderstandings about the use of json? duzelt bunu
+## Please ask Sarah Sanders to mark this coursework herself, this has been discussed and agreed upon
+
 
 Python environment is created, please activate a venv.
 
@@ -31,6 +32,19 @@ python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")'
 
 *Tests are run entering below command in terminal:
 python -m pytest -v tests/ -W ignore::DeprecationWarning
+
+to run api links
+no filter:   `/data/`         i.e., 127.0.0.1:5000/data/ 
+ without any filter paramaters returns all data in json format
+
+single filter:  `/data/?<header>=<option>`         i.e., 127.0.0.1:5000/data/?day=23
+Adding a single filter can be accomplished with `?<header>=` syntax, given the category and unique value are acceptable inputs from the dataset
+
+several filters: `/data/?<header>=<option>&<another_header>=<another_option>...`  i.e., 127.0.0.1:5000/data/?day=23&month=10&year=2015 would return the traffic details for the specific date 23.10.2015
+With `&` symbol new query parameters can be added to further constraint and personalize the scope of traffic observations
+
+note: query values with two or more words, i.e. colombus day, use `%20` for spaces between words:
+/data/?holiday=Columbus%20Day, or /data/?holiday=New%20Years%20Day
 
 
 

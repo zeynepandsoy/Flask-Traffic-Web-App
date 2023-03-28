@@ -15,16 +15,16 @@ def test_valid_login(test_client, authenticated_user):
         data=dict(email=authenticated_user.email, password=authenticated_user.password), #follow_redirects=True,
     )
     response = test_client.get("/", follow_redirects=True)
-    assert response.status_code == 200 #should this be 200!!!?
-    # check that the user is redirected to the dashboard
-    #assert response.location == url_for("main_bp.dashboard")
+    assert response.status_code == 200 
+
+    # check that the user is redirected to the dashboard / Assert that the current URL is the main dashboard page URL
+    assert request.path == url_for("main_bp.dashboard")
+
     assert b"Logout" in response.data
+
     # maybe delete this line
     assert current_user.email == authenticated_user.email
 
-
-
-#add test or remember me
 
 # include variations for this i.e. correct email wrong password vice versa.
 def test_invalid_login(test_client):
@@ -38,6 +38,7 @@ def test_invalid_login(test_client):
     assert b"Email address not found" in response.data
 
 
+
 # NOT SURE IF THIS IS CORRECT
 def test_logout(test_client, authenticated_user):
     """Test that a user can log out"""
@@ -48,17 +49,17 @@ def test_logout(test_client, authenticated_user):
     assert response.status_code == 200
     assert b"Login" in response.data
     assert b"Signup" in response.data
+
     # check that the user is no longer authenticated
-
-    #with test_client.session_transaction() as sess:
-        #assert "user_id" not in sess
     assert current_user.is_authenticated == False
+    with test_client.session_transaction() as sess:
+        assert "user_id" not in sess
+    
 
-
-## TESTS THAT COVER ERROR HANDLIND
+##  ERROR HANDLIND
 
 def test_login_no_user(test_client):
-    #Test that a user cannot log in with an email that does not exist
+    """Test that a user cannot log in with an email that does not exist in the database"""
     response = test_client.post(
         "/login",
         data=dict(email="notexist@test.com", password="password"),
@@ -70,7 +71,7 @@ def test_login_no_user(test_client):
 
 
 def test_login_no_password(test_client, new_user):
-    #Test that a user cannot log in with no password
+    """Test that a user cannot log in with no password"""
     response = test_client.post(
         "/login",
         data=dict(email=new_user.email, password=""),
@@ -80,16 +81,53 @@ def test_login_no_password(test_client, new_user):
     assert response.status_code == 200
     assert b"This field is required" in response.data
 
-"""
+
+def test_login_wrong_password(test_client, new_user):
+    """Test that a user cannot log in with the wrong password"""
+
+    response = test_client.post(
+        "/login",
+        data=dict(email=new_user.email, password="wrongpassword"),
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"Incorrect password" in response.data
+
+
 
 def test_signup_password_mismatch(test_client):
     #Test that a user cannot sign up with a password mismatch
+    response = test_client.post('/signup', data={
+        'name': 'Another Test User',
+        'email': 'anothertestuser@example.com',
+        'password': 'password123',
+        'confirm': 'password124'
+    })
 
-""" 
+    # Check that the response contains an error message
+    assert b'Passwords must match.' in response.data
 
+def test_signup_existing_user(test_client, authenticated_user):
+    #Test that a user cannot sign up with an existing email
+
+    # try to sign up with the same email
+    response = test_client.post('/signup', data={
+        'name': 'Different Test User',
+        'email': authenticated_user.email,
+        'password': 'testpassword157',
+        'confirm': 'testpassword157'
+    })
+    assert response.status_code == 200
+    # check if the error message is present in the response data
+    assert b"A user already exists with that email!" in response.data
+
+    # Check that the user was not created with the new credentials
+    assert not User.query.filter_by(name='Different Test User').one_or_none()
+"""
 ##FAILS
 def test_signup_existing_user(test_client, new_user):
-    """Test that a user cannot sign up with an existing email"""
+    #Test that a user cannot sign up with an existing email
 
     # try to sign up with the same email
     response = test_client.post(
@@ -107,19 +145,9 @@ def test_signup_existing_user(test_client, new_user):
 
     # assert that the user was not actually created with the existing email
     assert not User.query.filter_by(email=new_user.email).one_or_none()
+""" 
 
 
-def test_login_wrong_password(test_client, new_user):
-    """Test that a user cannot log in with the wrong password"""
-
-    response = test_client.post(
-        "/login",
-        data=dict(email=new_user.email, password="wrongpassword"),
-        follow_redirects=True,
-    )
-
-    assert response.status_code == 200
-    assert b"Incorrect password" in response.data
 
 """ 
 def test_login_redirect(test_client, new_user):

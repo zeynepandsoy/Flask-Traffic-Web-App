@@ -1,24 +1,29 @@
 {% extends 'layout.html' %}
 
-{% set title = 'Query' %}
+
+{% set title = 'Query Options for ' + header.replace('_', ' ')%}
+
 
 {% block content %}
-  <div class="jumbotron text-center">
-    <h1 class="display-4">Query Options for {{ header }}</h1>
-  </div>
-  <!-- Dropdown menu -->
-  <form class="form-inline mb-4" method="get">
-    <div class="form-group">
-      <label for="options" class="mr-2">Select an option:</label>
-      <!-- Note: As below codeline includes JavaScript, it may be underlined -->
-      <select class="form-control form-control-sm" name="option" id="options" onchange="window.location.href = '{{ url_for('main_bp.result', header=header, option=option) }}/' + this.value.replace(' ', '_');">
-        {% for option in options %}
-          <option value="{{ option }}">{{ option }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </form>
+ <div class="jumbotron text-center">
+   <h1 class="display-4">{{ title }}</h1>
+ </div>
+ <!-- Dropdown menu -->
+ <form class="form-inline mb-4" method="get">
+   <div class="form-group">
+     <label for="options" class="mr-2">Select an option:</label>
+     <!-- Note: As below codeline includes JavaScript, it may be underlined -->
+     <select class="form-control form-control-sm" name="option" id="options" onchange="window.location.href = '{{ url_for('main_bp.result', header=header, option=option) }}/' + this.value.replace(' ', '_');">
+        <option value="" disabled selected>Select from below</option>
+       {% for option in options %}
+         <option value="{{ option }}">{{ option}}</option>
+       {% endfor %}
+     </select>
+   </div>
+ </form>
 {% endblock %}
+
+
 
 
 

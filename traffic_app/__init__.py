@@ -7,6 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_marshmallow import Marshmallow
 
+from sqlalchemy.orm import Session
+
 # Sets the project root folder
 PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')
 
@@ -17,6 +19,19 @@ login_manager = LoginManager()
 # Create a global Flask-Marshmallow object
 ma = Marshmallow()
 
+
+def get_db() -> Session:
+    """
+    Create a new SQLAlchemy Session for each request and ensure it is closed afterwards.
+    """
+    db_session = Session()
+    try:
+        yield db_session
+    finally:
+        db_session.close()
+
+
+
 # Application Factory Function
 def create_app(config_object): 
     """Create and configure the Flask app"""
@@ -25,10 +40,10 @@ def create_app(config_object):
     # Application Configuration, see config parameters in config.py
     app.config.from_object(config_object) 
     
-    #login_manager.login_view = 'auth_bp.login' should be added 
-    
     # Initialise extensions
     initialize_extensions(app)
+    
+    login_manager.login_view = 'auth_bp.login' #should be added ?
 
     with app.app_context():
         from . import routes, auth
