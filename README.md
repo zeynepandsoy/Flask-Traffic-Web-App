@@ -59,6 +59,10 @@ i.e., 127.0.0.1:5000/data/?day=23&month=10&year=2015 would return the traffic de
 
 ## Results of running tests
 
+comment on the extent to which you decided to test your app!!!!
+(It will be assessed by evidence that your tests test the core functions and features of your app and any of the helper functions you create in your code.)
 
+![Evidence of running Test Results and Coverage Reports](/traffic_app/static/assets/TestResults-CoverageReport.png)
 
-![Test Results](/traffic_app/static/assets/TestResults.png)
+evidence of your CI test reports
+GitHub Actions page
