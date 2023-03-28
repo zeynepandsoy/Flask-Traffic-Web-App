@@ -25,11 +25,11 @@ Python environment is created, please activate a venv.
 
 Install the packages from requirements.txt.
 
-*The app is ran entering below command in terminal:
+**The app is ran entering below command in terminal:**
 
 `python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run`
 
-*The tests are ran entering below command in terminal:
+**The tests are ran entering below command in terminal:**
 
 `python -m pytest -v tests/ -W ignore::DeprecationWarning`
 
@@ -59,4 +59,6 @@ i.e., 127.0.0.1:5000/data/?day=23&month=10&year=2015 would return the traffic de
 
 ## Results of running tests
 
-<img width="1002" alt="Test Results" src="https://user-images.githubusercontent.com/115081167/228340260-09d32ceb-9955-4601-9d31-a2479d1a50ca.png">
+
+
+![Test Results](/traffic_app/static/assets/TestResults.png)
