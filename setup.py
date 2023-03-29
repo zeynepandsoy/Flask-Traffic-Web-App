@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-#check week-9-complete code to add more setup packages i.e. pandas..
 setup(
   name="traffic_app",
   packages=find_packages(), #packages=['traffic_app'],

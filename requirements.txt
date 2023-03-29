@@ -1,7 +1,7 @@
-#check week-9-complete code to add versions and more packages
 pandas
 openpyxl
 flask
+flask-login
 flask-sqlalchemy
 Flask-WTF
 flask-wtf
@@ -15,4 +15,3 @@ pytest-cov==4.0.0
 pytest-flask==1.2.0
 
 
-#flask-login

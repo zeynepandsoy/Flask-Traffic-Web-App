@@ -1,5 +1,9 @@
-"""Flask configuration."""
+
 from pathlib import Path
+
+# --------------------
+# Flask Configuration
+# --------------------
 
 # Sets the project root folder
 PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')

@@ -9,7 +9,13 @@ from wtforms.validators import (
     Length
 )
 
-#put reference
+# --------------------
+# Authentication Forms 
+# --------------------
+
+# Code for SignupForm and LoginForm routes are adapted from hackersandslackers tutorial on user authentication with flask login
+# Code written by Todd Birchard on harckersandslackers on Apr 4, 2019 is available at: https://hackersandslackers.com/flask-login-user-authentication/
+
 
 class SignupForm(FlaskForm):
     """User Sign-up Form."""
@@ -50,6 +56,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Log In')
 
     """
+    HANDLED ELSEWHERE
     def validate_email(self, email):
     	user = User.query.filter_by(email=email.data).first()
     	if user is None:

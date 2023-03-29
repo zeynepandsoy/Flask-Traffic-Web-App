@@ -2,12 +2,11 @@
 
 from pathlib import Path
 from flask import Flask
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_marshmallow import Marshmallow
-
 from sqlalchemy.orm import Session
+
 
 # Sets the project root folder
 PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')
@@ -31,19 +30,22 @@ def get_db() -> Session:
         db_session.close()
 
 
-
+# ----------------------------
 # Application Factory Function
+# ----------------------------
+
 def create_app(config_object): 
     """Create and configure the Flask app"""
     #Initialise the Flask application.
     app = Flask(__name__)
     # Application Configuration, see config parameters in config.py
     app.config.from_object(config_object) 
-    
+
     # Initialise extensions
     initialize_extensions(app)
     
-    login_manager.login_view = 'auth_bp.login' #should be added ?
+    # Set the login view for unauthenticated users to the login page
+    login_manager.login_view = 'auth_bp.login' 
 
     with app.app_context():
         from . import routes, auth
@@ -66,4 +68,3 @@ def initialize_extensions(app):
 
 # Included imports at the end to prevent circular imports 
 from .models import User, Query
-#from .schemas import UserSchema, QuerySchema

@@ -4,6 +4,9 @@ from traffic_app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# ---------------
+# Database Models
+# ---------------
 
 class User(UserMixin, db.Model):
     """User account model."""
@@ -44,7 +47,7 @@ class User(UserMixin, db.Model):
     
 
 class Query(db.Model):
-    """Traffic Query Parameters"""
+    """Model for Traffic Query Parameters"""
 
     __tablename__ = "newdatabase"
     rowid = db.Column(db.Integer, primary_key=True)
@@ -57,7 +60,6 @@ class Query(db.Model):
     hour = db.Column(db.Integer, nullable=False)
     categorized_hour = db.Column(db.Text, nullable=False)
     categorized_weekday = db.Column(db.Text, nullable=False)
-    #date = db.Column(db.Date, nullable=False)
 
 
     def __init__(self, holiday, weather, traffic_volume, year, month, day, hour, categorized_hour, categorized_weekday):
@@ -70,17 +72,15 @@ class Query(db.Model):
         self.hour = hour
         self.categorized_hour 
         self.categorized_weekday 
-        #self.date = date
-
 
 
     def __repr__(self):
         """
-        Returns the attributes of the event as a string
+        Returns the attributes of query as a string
         :returns str
         """
         clsname = self.__class__.__name__
-        return f"<{clsname}: {self.holiday},{self.weather}, {self.traffic_volume}, {self.year},{self.month},{self.day}, {self.hour}, {self.categorized_hour},{self.categorized_weekday}>" #, {self.date}
+        return f"<{clsname}: {self.holiday},{self.weather}, {self.traffic_volume}, {self.year},{self.month},{self.day}, {self.hour}, {self.categorized_hour},{self.categorized_weekday}>" 
 
 
 

@@ -1,5 +1,4 @@
 {% extends 'layout.html' %}
-
 {% set title = 'Query Results' %}
 
 {% block content %}
@@ -10,11 +9,11 @@
         <h1 class="display-4">{{title}} </h1>
     </div>
       <hr>
-      <p>You have chosen: {{ option }}</p>
+      <p>You have chosen the {{header}}: {{ option }}</p>
       <p><strong>Average Traffic Volume:</strong> {{ average }}</p>
       <p><strong>Minimum Traffic Volume:</strong> {{ minimum }}</p>
       <p><strong>Maximum Traffic Volume:</strong> {{ maximum }}</p>
-      
+
       <p> Compared with the average of all traffic observations, average traffic volume of {{ average }} is <span style="color:red;">{{ category }}</span></p>
       <br>
       <!-- Back button -->
