@@ -1,4 +1,4 @@
-from traffic_app.models import User
+from traffic_app.models import User, Query
 
 # -------------------
 # Test Database Model
@@ -20,4 +20,22 @@ def test_create_new_user():
     assert u.email == "john.doe@example.com"
     assert u.check_password("password123") is True
 
+
+def test_query_model():
+    """
+    GIVEN query information
+    WHEN a new Query object is created
+    THEN check the fields are defined correctly
+    """
+    query = Query(holiday='Independence Day', weather='Clear', traffic_volume=3214, year=2015, month=3, day=16, hour=10, categorized_hour='Afternoon', categorized_weekday='Sunday')
+    assert query.holiday == 'Independence Day'
+    assert query.weather == 'Clear'
+    assert query.traffic_volume == 3214
+    assert query.year == 2015
+    assert query.month == 3
+    assert query.day == 16
+    assert query.hour == 10
+    assert query.categorized_hour == 'Afternoon'
+    assert query.categorized_weekday == 'Sunday'
+    assert str(query) == "<Query: Independence Day,Clear, 3214, 2015,3,16, 10, Afternoon,Sunday>"
 

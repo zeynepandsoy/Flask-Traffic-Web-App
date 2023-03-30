@@ -70,8 +70,8 @@ class Query(db.Model):
         self.month = month
         self.day = day
         self.hour = hour
-        self.categorized_hour 
-        self.categorized_weekday 
+        self.categorized_hour = categorized_hour 
+        self.categorized_weekday = categorized_weekday 
 
 
     def __repr__(self):

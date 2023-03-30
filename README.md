@@ -1,70 +1,111 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=10410173&assignment_repo_type=AssignmentRepo)
-# COMP0034 Coursework 2 
 
-To set up your project:
+# COMP0034 Coursework 2 - Flask Traffic Web App
 
-1. Clone this repository in your IDE (e.g. PyCharm, Visual Studio Code) from GitHub. Follow the help in your IDE
-   e.g. [clone a GitHub repo in PyCharm.](https://www.jetbrains.com/help/pycharm/manage-projects-hosted-on-github.html#clone-from-GitHub)
-2. Create and then activate a virtual environment (venv). Use the instructions for your IDE
-   or [navigate to your project directory and use python.](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
-3. Install the requirements from requirements.txt. Use the instructions for your IDE
-   or [the pip documentation](https://pip.pypa.io/en/latest/user_guide/#requirements-files).
-4. Edit .gitignore to add any config files and folders for your IDE. 
-
-
-## Repository link
+### Repository link
 
 GitHub Repository Link: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy.git
 
-
-# Set-up Instructions to run the app 
-
 ## Please ask Sarah Sanders to mark this coursework herself, this has been discussed and agreed upon.
 
-Python environment is created, please activate a venv.
+## Overview 
 
-Install the packages from requirements.txt.
+This Flask web app provides summary statistics of traffic data from a SQLite database across several categories. It also offers an API endpoint for users to access the raw data in JSON format.
 
-**The app is ran entering below command in terminal:**
+## Setup 
 
-`python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run`
+Before running the app, create and activate a virtual environment. Then, install the required dependencies from the `requirements.txt` file using the following command:
 
-**The tests are ran entering below command in terminal:**
+```
+pip install -r requirements.txt
+```
 
-`python -m pytest -v tests/ -W ignore::DeprecationWarning`
+## Usage
 
-A single test can be ran with the command: `python -m pytest -v tests//test_filename.py::test_specific__test`
-i.e., python -m pytest -v tests//test_routes.py::test_get_all_data
+To run the app, execute the following command:
+
+```
+python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")' --debug run
+```
 
 
-## Instructions to query the API route to get all data using URL endpoints
+## Routes
 
-**No filter:** `/data/` i.e., 127.0.0.1:5000/data/ 
+The code defines several routes (i.e., URLs) that correspond to different pages in the web application.
 
-Without any filter, the url enpoint `/data/` returns all data in JSON format
+**Blueprints** allow modularizing the Flask application by breaking it up into smaller, more manageable pieces. In this project, two blueprints are defined and used to organize and group related routes together:
 
-**Single filter:** `/data/?<header>=<option>` i.e., 127.0.0.1:5000/data/?day=23
+* `auth_bp`  Contains routes related to user authentication (e.g., login, logout, registration)
+* `main_bp` Contains all other routes  including logged in page routes and an API route
 
-Adding a single filter can be accomplished commanding `?<header>=` , given the category and unique value are acceptable inputs from the dataset. This action return all data of the selected category in JSON format
+
+## Authentication
+
+User authentication is handled by Flask-Login. The authentication routes are defined using the @auth_bp.route() decorator, and include:
+
+* `/signup` Allows new users to sign up and create an account.
+* `/login` Allows registered users to log in to their account.
+* `/logout` Logs out the user and redirects them to the login page.
+
+
+## Main routes
+
+Main routes are defined using the @main_bp.route() decorator
+
+'Traffic Home' is the homepage of the app defined by the dashboard() function. It displays the column headers of all data in the database as cards. Users can click on a column header to see a dropdown menu of distinct values in that column.
+
+The query() function is responsible for displaying the dropdown menu of distinct values for a specified column in the Query table. It first replaces any invalid special characters in the column name with underscores, then queries the database for the distinct values of the specified column. 
+
+The result() function is responsible for displaying summary statistics for a particular query option (i.e., dropdown value). It first replaces any underscores in the query option with spaces, then queries the database for all rows that have the specified column value. It computes basic summary statistics -average, minimum, maximum- on traffic volume column based on the chosen option and displays the category of the option (e.g., "moderate" or "relatively high"). 
+
+### API Endpoint
+
+The app provides an API endpoint that enables users to retrieve/access data from the database in JSON format. Users can query the data with different filters or parameters, the data is then serialized using a QuerySchema and returned as a JSON response. To use the API endpoint, make a GET request to get_all_data route with enpoint `/data/` with the desired query parameters.
+
+**Querying the API Endpoint**
+
+The available query parameters are the same as the column names in the database. 
+
+**No filter:** `/data/` 
+
+Without any filter, the enpoint `/data/` retrieves all data in JSON format
+
+
+**Single filter:** `/data/?<header>=<option>` 
+
+Adding a single filter can be accomplished commanding `?<header>=` , given the category and unique value are acceptable inputs from the dataset. This action return all data of the selected option in JSON format
+
+For example, to filter by a specific day from the day column, use the following URL: `/data/?day=23`
+
+Multiple query parameters can be used to filter the data further:
 
 **Several filters:** `/data/?<header>=<option>&<another_header>=<another_option>...` 
 
 With `&` command new query parameters can be added to further constraint and personalize the scope of traffic observations
 
-i.e., 127.0.0.1:5000/data/?day=23&month=10&year=2015 would return the traffic details for the specific date 23/10/2015
+For example: To filter by a specific date, say 23/10/2015 use the following URL: `/data/?day=23&month=10&year=2015`
 
-***Remark:*** To query values with two or more words, i.e. Colombus Day, `%20` must be used instead of spaces between the words. i.e. /data/?holiday=Columbus%20Day, or /data/?holiday=New%20Years%20Day
+***Remark:*** To query values with two or more words, i.e. Colombus Day, `%20` must be used instead of spaces between the words. For example: `/data/?holiday=Columbus%20Day`, or `/data/?holiday=New%20Years%20Day` would be appropriate.
+
 
 # TESTING
 
-## Results of running tests
+Run the tests with the following command:
 
-comment on the extent to which you decided to test your app!!!!
-(It will be assessed by evidence that your tests test the core functions and features of your app and any of the helper functions you create in your code.)
+```
+python -m pytest -v tests/ -W ignore::DeprecationWarning
+```
+
+Run a single test with the command: `python -m pytest -v tests//test_filename.py::test_specific__test`
+i.e., python -m pytest -v tests//test_routes.py::test_get_all_data
+
+## Test Results and Coverage
 
 ![Evidence of running Test Results and Coverage Reports](/traffic_app/static/assets/TestResults-CoverageReport.png)
 
-evidence of your CI test reports
-GitHub Actions page
+Percentage of code coverage achieved by the tests ranges from 73% to 100%, with an overall coverage of 94%
 
-Problem i faced: 
+The report shows that there are some lines of code that are not covered by the tests, which means though the tests cover a significant portion of the application code, there are some areas that are not tested.
+
+GitHub Actions page repository: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy/actions
+

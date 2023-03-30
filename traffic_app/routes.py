@@ -1,4 +1,4 @@
-"""Logged-in page routes."""
+
 
 import re
 from flask import Blueprint, redirect, render_template, url_for
@@ -119,7 +119,7 @@ def logout():
 
 @app.get("/data/")
 def get_all_data():
-    """Returns all data in the database"""
+    """Returns all data in the database in JSON format"""
     # Get all columns in the Query table
     columns = [column.name for column in Query.__table__.columns]
 
