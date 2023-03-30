@@ -99,7 +99,9 @@ python -m pytest -v tests/ -W ignore::DeprecationWarning
 Run a single test with the command: `python -m pytest -v tests//test_filename.py::test_specific__test`
 i.e., python -m pytest -v tests//test_routes.py::test_get_all_data
 
-## Test Results and Coverage
+## Test Results 
+
+**Test Results and Coverage**
 
 ![Evidence of running Test Results and Coverage Reports](/traffic_app/static/assets/TestResults-CoverageReport.png)
 
@@ -107,5 +109,6 @@ Percentage of code coverage achieved by the tests ranges from 73% to 100%, with 
 
 The report shows that there are some lines of code that are not covered by the tests, which means though the tests cover a significant portion of the application code, there are some areas that are not tested.
 
+**CI workflow**
 GitHub Actions page repository: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy/actions
 
