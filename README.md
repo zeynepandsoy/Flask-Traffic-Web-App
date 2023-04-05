@@ -85,7 +85,11 @@ With `&` command new query parameters can be added to further constraint and per
 
 For example: To filter by a specific date, say 23/10/2015 use the following URL: `/data/?day=23&month=10&year=2015`
 
-***Remark:*** To query values with two or more words, i.e. Colombus Day, `%20` must be used instead of spaces between the words. For example: `/data/?holiday=Columbus%20Day`, or `/data/?holiday=New%20Years%20Day` would be appropriate.
+***Note:*** 
+To query values with two or more words, i.e. Colombus Day, `%20` must be used instead of spaces between the words. For example: `/data/?holiday=Columbus%20Day`, or `/data/?holiday=New%20Years%20Day` would be appropriate. 
+
+***Remark:*** 
+The header parameters categorized weekday and categorized hour are exceptions to above note, the correct format to specify the header names categorized weekday and categorized hour should include `_` between the words instead of `%20` or ` `. For example: `/data/?categorized_weekday=Tuesday`, or `/data/?categorized_hour=Afternoon` would be appropriate. 
 
 
 # Testing
