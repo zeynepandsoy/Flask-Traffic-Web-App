@@ -58,9 +58,9 @@ The query() function is responsible for displaying the dropdown menu of distinct
 
 The result() function is responsible for displaying summary statistics for a particular query option (i.e., dropdown value). It first replaces any underscores in the query option with spaces, then queries the database for all rows that have the specified column value. It computes basic summary statistics -average, minimum, maximum- on traffic volume column based on the chosen option and displays the category of the option (e.g., "moderate" or "relatively high"). 
 
-### API Endpoint
+## API Endpoint
 
-The app provides an API endpoint that enables users to retrieve/access data from the database in JSON format. Users can query the data with different filters or parameters, the data is then serialized with [Flask-Marshmallow](https://flask-marshmallow.readthedocs.io/en/latest/) using a QuerySchema and returned as a JSON response. To use the API endpoint, make a GET request to get_all_data route with enpoint `/data/` with the desired query parameters.
+The app provides an API endpoint that enables users to retrieve/access data from the [SQLite database](https://pythonbasics.org/flask-sqlite/) in JSON format. Users can query the data with different filters or parameters, the data is then serialized with [Flask-Marshmallow](https://flask-marshmallow.readthedocs.io/en/latest/) using a QuerySchema and returned as a JSON response. To use the API endpoint, make a GET request to get_all_data route with enpoint `/data/` with the desired query parameters.
 
 **Querying the API Endpoint**
 
@@ -88,7 +88,7 @@ For example: To filter by a specific date, say 23/10/2015 use the following URL:
 ***Remark:*** To query values with two or more words, i.e. Colombus Day, `%20` must be used instead of spaces between the words. For example: `/data/?holiday=Columbus%20Day`, or `/data/?holiday=New%20Years%20Day` would be appropriate.
 
 
-# TESTING
+# Testing
 
 Run the tests with the following command:
 
@@ -98,6 +98,7 @@ python -m pytest -v tests/ -W ignore::DeprecationWarning
 
 Run a single test with the command: `python -m pytest -v tests//test_filename.py::test_specific__test`
 i.e., python -m pytest -v tests//test_routes.py::test_get_all_data
+
 
 ## Test Results 
 
@@ -109,6 +110,7 @@ Percentage of code coverage achieved by the tests ranges from 73% to 100%, with 
 
 The report shows that there are some lines of code that are not covered by the tests, which means though the tests cover a significant portion of the application code, there are some areas that are not tested.
 
-**CI workflow**
+**CI workflow:**
+
 GitHub Actions page repository: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy/actions
 
