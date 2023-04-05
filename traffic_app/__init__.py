@@ -1,4 +1,4 @@
-"""Initialize app."""
+"""Initialize app"""
 
 from pathlib import Path
 from flask import Flask
@@ -8,13 +8,15 @@ from flask_marshmallow import Marshmallow
 from sqlalchemy.orm import Session
 
 
-# Sets the project root folder
+# Set the project root folder
 PROJECT_ROOT = Path(__file__).parent.joinpath('traffic_app')
 
 # Create a global SQLAlchemy object
 db = SQLAlchemy()
+
 # Create a global LoginManager object
 login_manager = LoginManager()
+
 # Create a global Flask-Marshmallow object
 ma = Marshmallow()
 
@@ -38,6 +40,7 @@ def create_app(config_object):
     """Create and configure the Flask app"""
     #Initialise the Flask application.
     app = Flask(__name__)
+
     # Application Configuration, see config parameters in config.py
     app.config.from_object(config_object) 
 
@@ -66,5 +69,5 @@ def initialize_extensions(app):
     ma.init_app(app)
 
 
-# Included imports at the end to prevent circular imports 
+# Include imports at the end to prevent circular imports 
 from .models import User, Query

@@ -27,7 +27,10 @@ def test_query_model():
     WHEN a new Query object is created
     THEN check the fields are defined correctly
     """
+    # create an instance of the Query model class
     query = Query(holiday='Independence Day', weather='Clear', traffic_volume=3214, year=2015, month=3, day=16, hour=10, categorized_hour='Afternoon', categorized_weekday='Sunday')
+    
+    # check that its fields are set correctly
     assert query.holiday == 'Independence Day'
     assert query.weather == 'Clear'
     assert query.traffic_volume == 3214
@@ -37,5 +40,7 @@ def test_query_model():
     assert query.hour == 10
     assert query.categorized_hour == 'Afternoon'
     assert query.categorized_weekday == 'Sunday'
+
+    # check that the __repr__ method returns a string with the correct format
     assert str(query) == "<Query: Independence Day,Clear, 3214, 2015,3,16, 10, Afternoon,Sunday>"
 

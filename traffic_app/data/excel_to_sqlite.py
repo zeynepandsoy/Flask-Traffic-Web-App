@@ -2,6 +2,10 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine, types
 
+# --------------------------
+# Excel to SQLite conversion
+# --------------------------
+
 # Define the database file name and location
 db_file = Path(__file__).parent.joinpath("traffic.db")
 
@@ -25,7 +29,7 @@ dtype_traffic = {
     "categorized_weekday": types.TEXT(),
 }
 
-# Write the contents of pandas traffic dataframe to a SQL database
+# Write the contents of traffic dataframe to a SQL database
 traffic_df.to_sql(
     "newdatabase", engine, if_exists="append", index=False, dtype=dtype_traffic
 )

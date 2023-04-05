@@ -35,13 +35,13 @@ The code defines several routes (i.e., URLs) that correspond to different pages 
 
 **Blueprints** allow modularizing the Flask application by breaking it up into smaller, more manageable pieces. In this project, two blueprints are defined and used to organize and group related routes together:
 
-* `auth_bp`  Contains routes related to user authentication (e.g., login, logout, registration)
-* `main_bp` Contains all other routes  including logged in page routes and an API route
+* `auth_bp`  Contains routes related to user authentication (e.g., login, signup, login helpers)
+* `main_bp` Contains all other routes including logged in page routes and an API route
 
 
 ## Authentication
 
-User authentication is handled by Flask-Login. The authentication routes are defined using the @auth_bp.route() decorator, and include:
+User authentication is handled by [Flask-Login](https://flask-login.readthedocs.io/en/latest/). The authentication routes are defined using the @auth_bp.route() decorator, and include:
 
 * `/signup` Allows new users to sign up and create an account.
 * `/login` Allows registered users to log in to their account.
@@ -60,7 +60,7 @@ The result() function is responsible for displaying summary statistics for a par
 
 ### API Endpoint
 
-The app provides an API endpoint that enables users to retrieve/access data from the database in JSON format. Users can query the data with different filters or parameters, the data is then serialized using a QuerySchema and returned as a JSON response. To use the API endpoint, make a GET request to get_all_data route with enpoint `/data/` with the desired query parameters.
+The app provides an API endpoint that enables users to retrieve/access data from the database in JSON format. Users can query the data with different filters or parameters, the data is then serialized with [Flask-Marshmallow](https://flask-marshmallow.readthedocs.io/en/latest/) using a QuerySchema and returned as a JSON response. To use the API endpoint, make a GET request to get_all_data route with enpoint `/data/` with the desired query parameters.
 
 **Querying the API Endpoint**
 

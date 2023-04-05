@@ -1,4 +1,4 @@
-
+"""Routes for the traffic_app Flask app"""
 
 import re
 from flask import Blueprint, redirect, render_template, url_for
@@ -101,14 +101,12 @@ def result(header, option):
     return render_template('result.html', **response)
 
  
-
 @main_bp.route("/logout")
 @login_required
 def logout():
     """Logs out the user and returns them to the login page"""
     logout_user()
     return redirect(url_for("auth_bp.login"))
-
 
 
 # ---------

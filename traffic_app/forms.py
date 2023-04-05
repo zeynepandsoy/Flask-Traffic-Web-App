@@ -56,7 +56,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Log In')
 
     """
-    HANDLED ELSEWHERE
+    Below functions are not needed as they are already implemented in the auth.py file
     def validate_email(self, email):
     	user = User.query.filter_by(email=email.data).first()
     	if user is None:

@@ -1,4 +1,3 @@
-
 import pytest
 from traffic_app import db, create_app 
 from config import TestConfig
@@ -18,16 +17,12 @@ def app():
     yield app
 
 
-# test_client fixture simulates HTTP requests and checks the responses
-# authenticated_user fixture creates a test user and logs them in before running the tests
-
 @pytest.fixture(scope="function")
 def test_client(app):
-    """Create a Flask test client"""
+    """Create a Flask test client that simulates HTTP requests and checks the responses"""
     with app.test_client() as testing_client:
         with app.app_context():
             yield testing_client
-
 
 
 @pytest.fixture(scope='function')
@@ -44,19 +39,19 @@ def new_user():
 
 @pytest.fixture(scope="function")
 def authenticated_user(test_client): 
-    """Fixture that logs in a test user"""
+    """Fixture that creates and logs in a test user"""
     # Create a test user
     user = User(name="auth user", email="auth_user@example.com")
     user.set_password("password")
     db.session.add(user)
     db.session.commit()
-
     # Log in the user
     test_client.post("/login", data=dict(email=user.email, password="password"))
     yield user 
     # cleanup after the test
     db.session.delete(user)
     db.session.commit()
+
 
 """
 Instead of below fixture, its functionality is implemented seperately on each fixture defined above

@@ -1,4 +1,3 @@
-
 from traffic_app.auth import load_user
 from traffic_app.models import User
 from flask_login import current_user
@@ -51,7 +50,7 @@ def test_invalid_login(test_client):
     # check that the user is not authenticated
     assert current_user.is_authenticated == False
 
-    # check if the user received an error message 'Email address not found'
+    # check if the response data contains the error message
     assert b"Email address not found" in response.data
 
 
@@ -60,20 +59,24 @@ def test_logout(test_client, authenticated_user):
     GIVEN a user who is authenticated and logged in
     WHEN the user attempts to logs out
     THEN the user is able to log out successfully,
-        and the 'Login' and 'Signup' buttons are present in the response data.
+        and the 'Login' and 'Signup' links are present in the response data.
     """
     # log in as the user
-    test_client.post("/login", data=dict(email=authenticated_user.email, password="password")) #, follow_redirects=True)
+    test_client.post("/login", data=dict(email=authenticated_user.email, password="password")) 
     
     # log out as the user
     response = test_client.get("/logout", follow_redirects=True)
 
+    # check if the response status was 200(OK) 
     assert response.status_code == 200
+
     # check that the response data contains the 'Login' and 'Signup' buttons
     assert b"Login" in response.data
     assert b"Signup" in response.data
+
     # check that the user is no longer authenticated
     assert current_user.is_authenticated == False
+
     # further check that the user_id is not present in the session
     with test_client.session_transaction() as sess:
         assert "user_id" not in sess
@@ -106,7 +109,7 @@ def test_valid_signup(test_client):
     # check that the user is authenticated
     assert current_user.is_authenticated == True
 
-    #assert b'You are registered!' in response.data
+    # check that the response data contains 'Traffic Home'
     assert b'Traffic Home' in response.data
 
 
@@ -126,33 +129,36 @@ def test_login_no_user(test_client, new_user):
         data=dict(email="notexist@test.com", password=new_user.password),
         follow_redirects=True,
     )
-    #assert response.status_code == 200
+    # check that the unsuccessful login response status code is 200(OK)
+    assert response.status_code == 200
+
     # check if error message is present in the response data
     assert b"Email address not found" in response.data
 
 
 def test_login_no_password(test_client, new_user):
     """
-    GIVEN an authentiated new user 
+    GIVEN a new user 
     WHEN the user attempts to login with blank password
     THEN the user is not able to login
         and is shown an error message 'This field is required'
     """
-    #try to log in with no password
+    #try to log in with no / blank password
     response = test_client.post(
         "/login",
         data=dict(email=new_user.email, password=""),
         follow_redirects=True,
     )
+    # check that the unsuccessful login response status code is 200(OK)
     assert response.status_code == 200
+
     # check if error message is present in the response data
     assert b"This field is required" in response.data
 
 
 def test_login_wrong_password(test_client, new_user):
     """
-    Test that a user cannot log in with the wrong password
-    GIVEN an authenticated new user 
+    GIVEN a new user 
     WHEN the user attempts to login with the wrong password
     THEN the user is not able to login
         and is shown an error message 'Incorrect password'
@@ -163,7 +169,9 @@ def test_login_wrong_password(test_client, new_user):
         data=dict(email=new_user.email, password="wrongpassword"),
         follow_redirects=True,
     )
+    # check that the unsuccessful login response status code is 200(OK)
     assert response.status_code == 200
+
     # check if error message is present in the response data
     assert b"Incorrect password" in response.data
 
@@ -183,6 +191,8 @@ def test_signup_password_mismatch(test_client):
         'password': 'password123',
         'confirm': 'password124'
     })
+    # check that the unsuccessful signup response status code is 200(OK)
+    assert response.status_code == 200
 
     # Check if error message is present in the response data
     assert b'Passwords must match.' in response.data
@@ -190,7 +200,7 @@ def test_signup_password_mismatch(test_client):
 
 def test_signup_existing_user(test_client, authenticated_user):
     """
-    GIVEN a user who is not authenticated
+    GIVEN a new user
     WHEN the user attempts to sign up with an already existing email
     THEN the user is not able to sign up
         and is shown an error message 'A user already exists with that email!'
@@ -203,34 +213,36 @@ def test_signup_existing_user(test_client, authenticated_user):
         'password': 'testpassword157',
         'confirm': 'testpassword157'
     })
+    # check that the unsuccessful signup response status code is 200(OK)
     assert response.status_code == 200
+
     # check if the error message is present in the response data
     assert b"A user already exists with that email!" in response.data
 
-    # Check that the user was not created with the new credentials
+    # Further check that the user was not created with the new credentials
     assert not User.query.filter_by(name='Different Test User').one_or_none()
     
 
 def test_login_redirect(test_client, authenticated_user):
     """
-    Test that authorized users are redirected to the home page after login.
     GIVEN an authenticated user
     WHEN the user logs in with valid credentials
-    THEN the response redirects to the home page '/'
+    THEN the user is redirected to the home page 
+        and is shown the 'Traffic Home' title and 'Logout' link
     """
-    # Log in as the user
+    # Log in with valid credentials
     response = test_client.post("/login", data=dict(email=authenticated_user.email, password="password"), follow_redirects=True) 
 
-    # Check that the response status code is 200 OK.
+    # Check that the response status code is 200 OK
     assert response.status_code == 200  
 
-    # Check that there was one redirect response.
+    # Check that there was one redirect response
     assert len(response.history) == 1
 
     # Check that the user is redirected to the main page.
-    assert response.request.path == "/" #url_for("main_bp.dashboard")
+    assert response.request.path == "/" # or response.request.path == url_for("main_bp.dashboard")
 
-    # Check that Logout and Traffic Home are present in the response data.
+    # Check that Logout link and Traffic Home title are present in the response data.
     assert b"Logout" in response.data
     assert b"Traffic Home" in response.data
 
@@ -243,16 +255,18 @@ def test_load_user(test_client, new_user):
     """
     GIVEN a new user with a valid user ID and an invalid user ID
     WHEN the load_user function is called with the user ID
-    THEN the corresponding user object is returned only if user ID is valid, otherwise return None
+    THEN the corresponding user object is returned only if user ID is valid, otherwise None is returned
     """
     with test_client.application.app_context():
         # test with valid user id
         user = load_user(new_user.id)
+
         # check that the user object returned is the same as the new user object
         assert user == new_user
 
         # test with invalid user id
         user = load_user(99999)
+
         # check that the user object returned is None
         assert user is None
 
@@ -260,17 +274,19 @@ def test_load_user(test_client, new_user):
 def test_unauthorized_handler(test_client):
     """
     GIVEN a user who is not authenticated
-    WHEN the user attempts to access an authorised page
+    WHEN the user attempts to access an authorised page (i.e. a route with @login_required decorator)
     THEN the user is redirected to the login page
         and is shown an error message 'You must be logged in to view that page.'
     """
     # try to access an authorised page
-    response = test_client.get("/")  #response=unauthorized()
+    response = test_client.get("/")  # or response = unauthorized()
+
     # check that the response status code is a redirect
     assert response.status_code == 302
-    # check that the response is redirected tp the login page
+
+    # check that the response is redirected to the login page
     assert response.location == url_for("auth_bp.login")
 
-    # check that the error message 'You must be logged in to view that page.' is flashed
+    # check that the related error message is flashed
     with test_client.session_transaction() as session:
         assert "You must be logged in to view that page." in session['_flashes'][0][1]

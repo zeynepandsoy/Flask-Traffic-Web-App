@@ -1,4 +1,3 @@
-
 from traffic_app.models import Query
 from flask import url_for
 
@@ -6,71 +5,72 @@ from flask import url_for
 # Test Main Routes
 # -----------------
 
+# Note: The user variable is not used in main route tests, but it's assigned to ensure the fixture runs correctly
 
 def test_dashboard(test_client, authenticated_user): 
     """
     Test dashboard/main page is accessible when logged in
-    GIVEN the user is logged in
+    GIVEN an authenticated user that is logged in
     WHEN the user requests the main page
-    THEN the main page should load successfully and display the correct content (column headers)
+    THEN the main page should load successfully 
+        and display the correct content
     """
     # Log in the user using the authenticated_user fixture
-    # Note: The user variable is not used in this test, but it's assigned to ensure the fixture runs correctly
     user = authenticated_user
 
     # Make a request to the main page
-    #response = test_client.get(url_for('main_bp.dashboard'))
-    response = test_client.get("/") 
+    response = test_client.get("/") # or test_client.get(url_for('main_bp.dashboard'))
     
     # Check that the response is valid
     assert response.status_code == 200
 
     # Check that the response data contains the expected HTML
     assert b"Please choose a category to query traffic volume on:" in response.data
-   
-    
+
+    # Check that the response data displays the correct headers
+    assert b"holiday" in response.data
+    assert b"weather" in response.data
+
 
 def test_query(test_client, authenticated_user): 
     """
     Test query page loads with correct dropdown options
     GIVEN an authenticated user that has logged in 
-    WHEN the user selects a header column to query (dashboard page)
-    THEN the query page should load successfully and display the correct content (dropdown options)
+    WHEN the user selects a header column to query (main page)
+    THEN the query page should load successfully 
+        and display the correct content (dropdown options)
     """
     # Log in the user using the authenticated_user fixture
     user = authenticated_user
 
     # Make a request to the query page
-    #response = test_client.get("/query/holiday") 
-    response = test_client.get(url_for('main_bp.query', header='holiday')) 
+    response = test_client.get(url_for('main_bp.query', header='holiday')) # or test_client.get("/query/holiday") 
 
     # Check that the response is valid
     assert response.status_code == 200
 
-    # Check that the response data contains the expected HTML
+    # Check that the response data displays the correct dropdown options
     assert b"Columbus Day" in response.data
-    
-
-
+    assert b"Independence Day" in response.data
 
 def test_result(test_client, authenticated_user): 
     """
     Test result page loads with correct data
     GIVEN an authenticated user that is logged in 
     WHEN the user selects a header column and option from the dropdown (query page)
-    THEN the result page should load successfully and display the correct results
+    THEN the result page should load successfully
+        and display the correct results (summary statistics)
     """
     # Log in the user using the authenticated_user fixture
     user = authenticated_user
 
     # Make a request to the result page
-    #response = test_client.get("/result/year/2018")
-    response = test_client.get(url_for('main_bp.result', header='year', option='2018'))
+    response = test_client.get(url_for('main_bp.result', header='year', option='2018')) # or test_client.get("/result/year/2018")
 
     # Check that the response is valid
     assert response.status_code == 200
 
-    # Check that the response data contains the expected HTML
+    # Check that the response data displays the correct results (summary statistics of traffic w.r.t. chosen option)
     assert b"Query Results" in response.data
     assert b"You have chosen the year: 2018" in response.data
     assert b"Maximum Traffic Volume:</strong> 7213" in response.data
@@ -119,4 +119,3 @@ def test_get_specific_data(test_client):
 
     # Check that the correct data is returned when multiple query parameters are provided
     assert len(response.json) == Query.query.filter_by(day=23, month=10, year=2015).count()
-

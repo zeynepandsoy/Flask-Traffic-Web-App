@@ -1,4 +1,4 @@
-"""Routes for user authentication."""
+"""Routes for user authentication"""
 
 from datetime import timedelta
 from flask import Blueprint, flash, redirect, render_template, request, url_for, abort
