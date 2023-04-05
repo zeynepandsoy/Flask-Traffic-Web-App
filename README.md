@@ -33,7 +33,7 @@ python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")'
 
 The code defines several routes (i.e., URLs) that correspond to different pages in the web application.
 
-**Blueprints** allow modularizing the Flask application by breaking it up into smaller, more manageable pieces. In this project, two blueprints are defined and used to organize and group related routes together:
+[**Blueprints**](http://exploreflask.com/en/latest/blueprints.html) allow modularizing the Flask application by breaking it up into smaller, more manageable pieces. In this project, two blueprints are defined and used to organize and group related routes together:
 
 * `auth_bp`  Contains routes related to user authentication (e.g., login, signup, login helpers)
 * `main_bp` Contains all other routes including logged in page routes and an API route
