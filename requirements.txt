@@ -9,9 +9,12 @@ flask-wtf
 flask-marshmallow
 marshmallow-sqlalchemy
 requests
+email_validator
 numpy
 pytest==7.2.1
 pytest-cov==4.0.0
 pytest-flask==1.2.0
-email_validator==1.1.3
+
+
+
 
