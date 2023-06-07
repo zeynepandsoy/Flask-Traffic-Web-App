@@ -2,12 +2,6 @@
 
 # COMP0034 Coursework 2 - Flask Traffic Web App
 
-### Repository link
-
-GitHub Repository Link: https://github.com/ucl-comp0035/comp0034-cw2-i-zeynepandsoy.git
-
-## Please ask Sarah Sanders to mark this coursework herself, this has been discussed and agreed upon.
-
 ## Overview 
 
 This Flask web app provides summary statistics of traffic data from a SQLite database across several categories. It also offers an API endpoint for users to access the raw data in JSON format.
@@ -31,7 +25,7 @@ python3 -m flask --app 'COMP0034_CW2/traffic_app:create_app("config.DevConfig")'
 
 ## Routes
 
-The code defines several routes (i.e., URLs) that correspond to different pages in the web application.
+Several routes (i.e., URLs) that correspond to different pages in the web application are defined:
 
 [**Blueprints**](http://exploreflask.com/en/latest/blueprints.html) allow modularizing the Flask application by breaking it up into smaller, more manageable pieces. In this project, two blueprints are defined and used to organize and group related routes together:
 
